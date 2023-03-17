@@ -13,7 +13,7 @@ import ObjectReader from './reader/object.js';
 import { visitAfter } from './util.js';
 
 
-const WIDTH = 960;
+const WIDTH = 900;
 const HEIGHT = 800;
 const MARGIN = 20;
 
@@ -61,6 +61,12 @@ class VTree {
       .attr('width', this._width)
       .attr('height', this._height)
       .call(this.d3.zoomListener);
+  }
+
+  resize(width, height) {
+    this.width(width);
+    this.height(height);
+    this.update();
   }
 
   width(width) {
@@ -177,6 +183,10 @@ class VTree {
 
     this.createTreeGroups(this.d3.g, 0);
 
+    window.addEventListener('resize', () => {
+      vt.resize(window.innerWidth, window.innerHeight);
+    });
+    
     visitAfter(this.root, (node) => {
       node.render(node.g);
 
